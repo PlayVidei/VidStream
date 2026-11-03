@@ -97,32 +97,32 @@
         <!-- BACKDROP TRANSPARAN (Pemicu Smartlink Seluruh Layar Video) -->
         <div id="adBackdrop" class="absolute inset-0 z-10 bg-transparent cursor-pointer hidden" onclick="triggerSmartlinkBackdrop()"></div>
 
-        <!-- IKLAN 1: Chat Box Overlay (Posisi Tengah Layar, z-20) -->
+        <!-- IKLAN 1: Chat Box Overlay (Posisi Tengah Layar, Latar Putih Terang, z-20) -->
         <div id="chatAd" class="absolute inset-x-4 top-1/2 -translate-y-1/2 z-20 hidden justify-center pointer-events-auto">
-          <a href="https://auctionr.org/4/24b55e3636d607271fdc76c2cd116ebe" target="_blank" onclick="handleAdClick('chatAd', 'chat')" class="w-full max-w-xs bg-slate-900/95 border border-slate-700/90 p-3 pb-7 rounded-2xl shadow-2xl backdrop-blur flex items-start gap-2.5 relative text-left no-underline hover:border-slate-500 transition">
-            <div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center text-base flex-shrink-0 shadow-md">💬</div>
+          <a href="https://auctionr.org/4/24b55e3636d607271fdc76c2cd116ebe" target="_blank" onclick="handleAdClick('chatAd', 'chat')" class="w-full max-w-xs bg-white border border-slate-300 p-3 pb-7 rounded-2xl shadow-2xl flex items-start gap-2.5 relative text-left no-underline hover:border-slate-400 transition">
+            <div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center text-base flex-shrink-0 shadow-md text-white">💬</div>
             <div class="chat-text flex-1 pr-2">
               <!-- Content diisi via JS (Siklus 1 & Siklus 2) -->
             </div>
             <!-- Tombol Tutup Pojok Kanan Bawah Kotak Chat -->
-            <span onclick="closeAd(event, 'chatAd', 'chat')" class="absolute bottom-1.5 right-2.5 bg-red-500/90 hover:bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded cursor-pointer transition z-30">tutup</span>
+            <span onclick="closeAd(event, 'chatAd', 'chat')" class="absolute bottom-1.5 right-2.5 bg-red-500 hover:bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded cursor-pointer transition z-30">tutup</span>
           </a>
         </div>
 
-        <!-- IKLAN 2: In-Page Push Berisi Pemutar Video (Posisi Melayang di Pojok Kanan Bawah Pemutar, z-30) -->
-        <div id="bannerAd" class="absolute right-3 bottom-3 z-30 hidden pointer-events-auto w-44 sm:w-52 bg-slate-900/95 border border-indigo-500/50 rounded-2xl overflow-hidden shadow-2xl backdrop-blur animate-bounce">
-          <a href="https://auctionr.org/4/24b55e3636d607271fdc76c2cd116ebe" target="_blank" onclick="handleAdClick('bannerAd', 'banner')" class="block relative w-full aspect-[9/16] bg-black">
+        <!-- IKLAN 2: In-Page Push (Posisi Bawah Tengah Player, Diperkecil jadi Sepertiga Tinggi Iklan 1, z-30) -->
+        <div id="bannerAd" class="absolute bottom-3 left-1/2 -translate-x-1/2 z-30 hidden pointer-events-auto w-32 sm:w-36 bg-slate-900/95 border border-indigo-500/50 rounded-xl overflow-hidden shadow-2xl backdrop-blur animate-bounce">
+          <a href="https://auctionr.org/4/24b55e3636d607271fdc76c2cd116ebe" target="_blank" onclick="handleAdClick('bannerAd', 'banner')" class="block relative w-full aspect-[16/9] bg-black">
             
             <!-- Elemen Video HTML5 Direct Link .mp4 -->
             <video id="bannerVideo" class="w-full h-full object-cover pointer-events-none" autoplay muted loop playsinline></video>
 
-            <!-- Label Notifikasi -->
-            <div class="absolute top-2 left-2 bg-black/60 backdrop-blur px-2 py-0.5 rounded-md text-[9px] font-bold text-indigo-400 border border-slate-700/50 flex items-center gap-1">
-              <span>🔔</span> Video Rekomendasi
+            <!-- Label Notifikasi Minimalis -->
+            <div class="absolute top-1 left-1 bg-black/70 backdrop-blur px-1.5 py-0.2 rounded text-[7px] font-bold text-indigo-400 border border-slate-700/50 flex items-center gap-0.5">
+              <span>🔔</span> <span>Rekomendasi</span>
             </div>
 
             <!-- Tombol (X) Tutup Iklan -->
-            <span onclick="closeAd(event, 'bannerAd', 'banner')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-red-500/90 hover:bg-red-600 text-white text-[10px] font-bold flex items-center justify-center cursor-pointer shadow transition z-40">×</span>
+            <span onclick="closeAd(event, 'bannerAd', 'banner')" class="absolute top-1 right-1 w-4 h-4 rounded-full bg-red-500 hover:bg-red-600 text-white text-[9px] font-bold flex items-center justify-center cursor-pointer shadow transition z-40">×</span>
           </a>
         </div>
 
@@ -309,13 +309,13 @@
         
         if (chatShowCount === 0) {
           chatTextElement.innerHTML = `
-            <strong class="text-indigo-400 font-bold block text-[11px] mb-0.5">Pesan Baru</strong>
-            <p class="text-slate-200 text-[11px] leading-snug break-words">Seseorang mengirimkan foto/video khusus untukmu! Klik untuk melihat sekarang.</p>
+            <strong class="text-indigo-600 font-bold block text-[11px] mb-0.5">Pesan Baru</strong>
+            <p class="text-slate-800 text-[11px] leading-snug break-words">Seseorang mengirimkan foto/video khusus untukmu! Klik untuk melihat sekarang.</p>
           `;
         } else {
           chatTextElement.innerHTML = `
-            <strong class="text-indigo-400 font-bold block text-[11px] mb-0.5">Pesan Baru (1)</strong>
-            <p class="text-slate-200 text-[11px] leading-snug break-words">Pesan belum dibaca: Link akses video penuh hampir kadaluarsa! Klik di sini untuk membuka.</p>
+            <strong class="text-indigo-600 font-bold block text-[11px] mb-0.5">Pesan Baru (1)</strong>
+            <p class="text-slate-800 text-[11px] leading-snug break-words">Pesan belum dibaca: Link akses video penuh hampir kadaluarsa! Klik di sini untuk membuka.</p>
           `;
         }
 

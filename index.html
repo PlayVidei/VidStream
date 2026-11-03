@@ -109,13 +109,20 @@
           </a>
         </div>
 
-        <!-- IKLAN 2: Banner Video Videy (Posisi Bawah Menutupi 1/3 Bagian Bawah Iklan 1, z-30) -->
-        <div id="bannerAd" class="absolute inset-x-4 bottom-2 z-30 hidden pointer-events-auto">
-          <a href="https://auctionr.org/4/24b55e3636d607271fdc76c2cd116ebe" target="_blank" onclick="handleAdClick('bannerAd', 'banner')" class="block relative w-full h-28 sm:h-32 bg-black/90 border border-slate-700/90 rounded-xl overflow-hidden shadow-2xl">
-            <!-- Frame Video Videy (Autoplay & Muted) -->
-            <iframe id="bannerVideo" class="w-full h-full object-cover border-0 pointer-events-none" allow="autoplay"></iframe>
-            <!-- Tombol (X) Pojok Kanan Atas Banner -->
-            <span onclick="closeAd(event, 'bannerAd', 'banner')" class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-red-500/90 hover:bg-red-600 text-white text-xs font-bold flex items-center justify-center cursor-pointer shadow-md transition z-40">×</span>
+        <!-- IKLAN 2: In-Page Push Berisi Pemutar Video (Posisi Melayang di Pojok Kanan Bawah Pemutar, z-30) -->
+        <div id="bannerAd" class="absolute right-3 bottom-3 z-30 hidden pointer-events-auto w-44 sm:w-52 bg-slate-900/95 border border-indigo-500/50 rounded-2xl overflow-hidden shadow-2xl backdrop-blur animate-bounce">
+          <a href="https://auctionr.org/4/24b55e3636d607271fdc76c2cd116ebe" target="_blank" onclick="handleAdClick('bannerAd', 'banner')" class="block relative w-full aspect-[9/16] bg-black">
+            
+            <!-- Elemen Video HTML5 Direct Link .mp4 -->
+            <video id="bannerVideo" class="w-full h-full object-cover pointer-events-none" autoplay muted loop playsinline></video>
+
+            <!-- Label Notifikasi -->
+            <div class="absolute top-2 left-2 bg-black/60 backdrop-blur px-2 py-0.5 rounded-md text-[9px] font-bold text-indigo-400 border border-slate-700/50 flex items-center gap-1">
+              <span>🔔</span> Video Rekomendasi
+            </div>
+
+            <!-- Tombol (X) Tutup Iklan -->
+            <span onclick="closeAd(event, 'bannerAd', 'banner')" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-red-500/90 hover:bg-red-600 text-white text-[10px] font-bold flex items-center justify-center cursor-pointer shadow transition z-40">×</span>
           </a>
         </div>
 
@@ -201,7 +208,6 @@
 
           <div class="p-3 flex-1 flex flex-col justify-between space-y-2">
             <div>
-              <!-- Tag Kategori Telah Dihilangkan & Judul Diubah Menjadi Biru Menyala -->
               <h3 class="text-xs font-semibold text-blue-400 group-hover:text-blue-300 transition line-clamp-2 leading-snug">
                 ${v.title}
               </h3>
@@ -249,7 +255,6 @@
       }
     }
 
-    // Pemicu Klik Play dari Katalog (Smartlink di Tab Baru + Redirect Player)
     function selectVideo(videoId) {
       window.open(SMARTLINK_URL, '_blank');
 
@@ -322,11 +327,12 @@
           const bannerVideoElement = document.getElementById('bannerVideo');
           
           if (bannerShowCount === 0) {
-            bannerVideoElement.src = 'https://videy.co/v/?id=ZQdLatS51&autoplay=1&muted=1';
+            bannerVideoElement.src = 'https://cdn.videy.co/ZQdLatS51.mp4';
           } else {
-            bannerVideoElement.src = 'https://videy.co/v/?id=ENOlSaoU1&autoplay=1&muted=1';
+            bannerVideoElement.src = 'https://cdn.videy.co/ENOlSaoU1.mp4';
           }
 
+          bannerVideoElement.play();
           document.getElementById('bannerAd').style.display = 'block';
         }
       }, 500);

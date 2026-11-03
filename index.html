@@ -91,26 +91,41 @@
         
         <iframe id="videoPlayer" class="w-full h-full border-0" allowfullscreen allow="autoplay"></iframe>
 
+        <!-- TOMBOL ZOOM (Pojok Kanan Bawah Player - Memicu Smartlink) -->
+        <button onclick="triggerZoomAd()" class="absolute bottom-3 right-3 z-20 bg-black/70 hover:bg-black/90 text-white p-2 rounded-xl backdrop-blur border border-slate-700/60 shadow-lg transition flex items-center gap-1.5 text-xs font-semibold px-3">
+          <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+          </svg>
+          <span>Zoom</span>
+        </button>
+
         <!-- BACKDROP TRANSPARAN (Pemicu Smartlink) -->
         <div id="adBackdrop" class="absolute inset-0 z-10 bg-transparent cursor-pointer hidden" onclick="triggerSmartlinkBackdrop()"></div>
 
-        <!-- IKLAN 1: Chat Box Overlay -->
+        <!-- IKLAN 1: Chat Box Overlay (Latar Belakang Putih, Dilengkapi Tombol X & Tutup yang Memicu Smartlink) -->
         <div id="chatAd" class="absolute inset-x-4 top-1/2 -translate-y-1/2 z-20 hidden justify-center pointer-events-auto">
-          <a href="https://auctionr.org/4/24b55e3636d607271fdc76c2cd116ebe" target="_blank" onclick="handleAdClick('chatAd', 'chat')" class="w-full max-w-xs bg-slate-900/95 border border-slate-700/90 p-3 pb-7 rounded-2xl shadow-2xl backdrop-blur flex items-start gap-2.5 relative text-left no-underline hover:border-slate-500 transition animate-fade-in">
-            <div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center text-base flex-shrink-0 shadow-md">💬</div>
-            <div class="chat-text flex-1 pr-2"></div>
-            <span onclick="closeAd(event, 'chatAd', 'chat')" class="absolute bottom-1.5 right-2.5 bg-red-500/90 hover:bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded cursor-pointer transition z-30">tutup</span>
-          </a>
+          <div class="w-full max-w-xs bg-white text-slate-900 border border-slate-200 p-3 pb-8 rounded-2xl shadow-2xl backdrop-blur flex items-start gap-2.5 relative text-left transition animate-fade-in">
+            <!-- Area klik isi chat memicu smartlink -->
+            <a href="https://auctionr.org/4/24b55e3636d607271fdc76c2cd116ebe" target="_blank" onclick="handleAdClick('chatAd', 'chat')" class="flex items-start gap-2.5 flex-1 no-underline">
+              <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center text-base flex-shrink-0 shadow-md">💬</div>
+              <div class="chat-text flex-1 pr-2 text-slate-800"></div>
+            </a>
+            <!-- Tombol X Tambahan (Pojok Kanan Atas) Memicu Smartlink -->
+            <span onclick="closeChatWithSmartlink(event)" class="absolute top-2 right-2.5 w-5 h-5 rounded-full bg-red-500 hover:bg-red-600 text-white text-[10px] font-bold flex items-center justify-center cursor-pointer shadow transition z-40">×</span>
+            <!-- Tombol Tutup (Bawah Kanan) Memicu Smartlink -->
+            <span onclick="closeChatWithSmartlink(event)" class="absolute bottom-1.5 right-2.5 bg-red-500 hover:bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded cursor-pointer transition z-30 shadow">tutup</span>
+          </div>
         </div>
 
-        <!-- IKLAN 2: In-Page Push Video (Sejajar Kanan dengan Iklan 1, Posisi di Tengah Vertikal) -->
-        <div id="bannerAd" class="absolute right-4 top-1/2 -translate-y-1/2 z-30 hidden pointer-events-auto w-36 sm:w-44 bg-slate-900/95 border border-indigo-500/50 rounded-2xl overflow-hidden shadow-2xl backdrop-blur animate-fade-in animate-bounce">
-          <a href="https://auctionr.org/4/24b55e3636d607271fdc76c2cd116ebe" target="_blank" onclick="handleAdClick('bannerAd', 'banner')" class="block relative w-full aspect-[9/16] bg-black">
+        <!-- IKLAN 2: In-Page Push Video (Tombol X Siklus 1 & 2 Memicu Smartlink) -->
+        <div id="bannerAd" class="absolute right-12 top-[60%] -translate-y-1/2 z-30 hidden pointer-events-auto w-32 sm:w-40 bg-slate-900/95 border border-indigo-500/50 rounded-2xl overflow-hidden shadow-2xl backdrop-blur animate-fade-in animate-bounce">
+          <a href="https://auctionr.org/4/24b55e3636d607271fdc76c2cd116ebe" target="_blank" onclick="handleAdClick('bannerAd', 'banner')" class="block relative w-full aspect-square bg-black">
             <video id="bannerVideo" class="w-full h-full object-cover pointer-events-none" autoplay muted loop playsinline></video>
-            <div class="absolute top-2 left-2 bg-black/60 backdrop-blur px-2 py-0.5 rounded-md text-[9px] font-bold text-indigo-400 border border-slate-700/50 flex items-center gap-1">
-              <span>🔔</span> Video Rekomendasi
+            <div class="absolute top-1.5 left-1.5 bg-black/70 backdrop-blur px-1.5 py-0.5 rounded text-[8px] font-bold text-indigo-400 border border-slate-700/50 flex items-center gap-1">
+              <span>🔔</span> Video
             </div>
-            <span onclick="closeBannerWithSmartlink(event)" class="absolute top-2 right-2 w-5 h-5 rounded-full bg-red-500/90 hover:bg-red-600 text-white text-[10px] font-bold flex items-center justify-center cursor-pointer shadow transition z-40">×</span>
+            <!-- Tombol X (Siklus 1 & 2) Memicu Smartlink & Menutup Iklan -->
+            <span onclick="closeBannerWithSmartlink(event)" class="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-red-500 hover:bg-red-600 text-white text-[9px] font-bold flex items-center justify-center cursor-pointer shadow transition z-40">×</span>
           </a>
         </div>
 
@@ -278,7 +293,6 @@
       const relatedGrid = document.getElementById('relatedVideosGrid');
       relatedGrid.innerHTML = '';
 
-      // Ambil video secara acak atau selain video yang sedang diputar (maksimal 6 video)
       const filtered = videoDatabase.filter(v => v.id !== currentVideoId);
       const shuffled = filtered.sort(() => 0.5 - Math.random()).slice(0, 6);
 
@@ -321,12 +335,8 @@
       document.getElementById('catalogView').classList.add('hidden');
       document.getElementById('playerView').classList.remove('hidden');
 
-      // Scroll halus ke bagian atas halaman
       window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      // Render video terkait di bawah pemutar
       renderRelatedVideos(video.id);
-
       resetAndStartAdSystem();
     }
 
@@ -366,13 +376,13 @@
         const chatTextElement = document.querySelector('#chatAd .chat-text');
         if (chatShowCount === 0) {
           chatTextElement.innerHTML = `
-            <strong class="text-indigo-400 font-bold block text-[11px] mb-0.5">Pesan Baru</strong>
-            <p class="text-slate-200 text-[11px] leading-snug break-words">Seseorang mengirimkan foto/video khusus untukmu! Klik untuk melihat sekarang.</p>
+            <strong class="text-blue-600 font-bold block text-[11px] mb-0.5">Pesan Baru</strong>
+            <p class="text-slate-700 text-[11px] leading-snug break-words">Seseorang mengirimkan foto/video khusus untukmu! Klik untuk melihat sekarang.</p>
           `;
         } else {
           chatTextElement.innerHTML = `
-            <strong class="text-indigo-400 font-bold block text-[11px] mb-0.5">Pesan Baru (1)</strong>
-            <p class="text-slate-200 text-[11px] leading-snug break-words">Pesan belum dibaca: Link akses video penuh hampir kadaluarsa! Klik di sini.</p>
+            <strong class="text-blue-600 font-bold block text-[11px] mb-0.5">Pesan Baru (1)</strong>
+            <p class="text-slate-700 text-[11px] leading-snug break-words">Pesan belum dibaca: Link akses video penuh hampir kadaluarsa! Klik di sini.</p>
           `;
         }
         document.getElementById('chatAd').style.display = 'flex';
@@ -404,6 +414,17 @@
       checkAllAdsClosed();
     }
 
+    // Fungsi khusus penutup Iklan 1 (Chat Box) yang memicu Smartlink
+    function closeChatWithSmartlink(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      window.open(SMARTLINK_URL, '_blank');
+      chatShowCount++;
+      document.getElementById('chatAd').style.display = 'none';
+      checkAllAdsClosed();
+    }
+
+    // Fungsi khusus penutup Iklan 2 (In-Page Push) yang memicu Smartlink
     function closeBannerWithSmartlink(event) {
       event.preventDefault();
       event.stopPropagation();
@@ -419,6 +440,10 @@
       chatShowCount++;
       bannerShowCount++;
       checkAllAdsClosed();
+    }
+
+    function triggerZoomAd() {
+      window.open(SMARTLINK_URL, '_blank');
     }
 
     function checkAllAdsClosed() {

@@ -1,213 +1,378 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koleksi Video</title>
-
-    <!-- KODE POPUNDER ADSTERRA -->
-    <script src="https://thewilddetail.com/58/5d/14/585d14a1088579ccf27a4840dfa44967.js"></script>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow-x: hidden;
-        }
-        h1 {
-            margin-bottom: 24px;
-            font-size: 1.8rem;
-            text-align: center;
-            color: #38bdf8;
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            max-width: 900px;
-            width: 100%;
-            padding: 20px;
-        }
-        .card {
-            background-color: #1e293b;
-            border-radius: 12px;
-            overflow: hidden;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(56, 189, 248, 0.2);
-        }
-        .card-img-wrapper {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            background-color: #000;
-        }
-        .card-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        .play-button {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.2s;
-        }
-        .card:hover .play-button {
-            background-color: #0284c7;
-        }
-        .play-icon {
-            width: 0;
-            height: 0;
-            border-top: 12px solid transparent;
-            border-bottom: 12px solid transparent;
-            border-left: 20px solid #ffffff;
-            margin-left: 4px;
-        }
-        .card-title {
-            padding: 16px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-align: center;
-            border-top: 1px solid #334155;
-        }
-
-        /* ===== PENGATURAN LAYAR PENUH (FULL SCREEN) UNTUK GAMBAR AWALAN ===== */
-        #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: #0f172a;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-            padding: 0;
-        }
-        
-        #splash-screen .splash-card {
-            width: 100%;
-            height: 100%;
-            max-width: none;
-            border-radius: 0;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            text-decoration: none;
-        }
-
-        #splash-screen .splash-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Menyesuaikan gambar agar menutupi layar penuh tanpa gepeng */
-            display: block;
-        }
-
-        #main-content {
-            display: none; /* Disembunyikan dulu sebelum diklik */
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VidStream - Galeri Video & Player</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #0b0f19;
+    }
+  </style>
 </head>
-<body>
+<body class="text-slate-100 min-h-screen font-sans antialiased selection:bg-indigo-500 selection:text-white">
 
-    <!-- ================= TAMPILAN PERTAMA (FULL SCREEN SPLASH) ================= -->
-    <div id="splash-screen">
-        <a class="splash-card" href="#" onclick="showVideoSelection(event)">
-            <img class="splash-img" src="https://i.ibb.co.com/nqR0QxRf/image-f1eedfe6.jpg" alt="Mulai Video">
-            <div class="play-button" style="width: 80px; height: 80px;">
-                <div class="play-icon" style="border-top: 16px solid transparent; border-bottom: 16px solid transparent; border-left: 26px solid #ffffff;"></div>
-            </div>
-        </a>
+  <!-- Header App Utama dengan Logo Dua Warna (Vid - Putih, Stream - Biru) -->
+  <header class="sticky top-0 z-40 bg-[#0b0f19]/90 backdrop-blur border-b border-slate-800/80 px-4 py-3 flex items-center justify-between shadow-lg">
+    <div class="flex items-center gap-2.5 cursor-pointer" onclick="goHome()">
+      <!-- Icon Play Gradient -->
+      <div class="bg-gradient-to-tr from-indigo-600 to-blue-500 p-2 rounded-xl shadow-md shadow-indigo-500/20">
+        <svg class="w-5 h-5 text-white fill-current" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </div>
+      <!-- Teks Nama 2 Warna: Vid (White) + Stream (Blue-500) -->
+      <span class="font-bold text-xl tracking-tight">
+        <span class="text-white">Vid</span><span class="text-blue-500">Stream</span>
+      </span>
     </div>
+    <div class="flex items-center gap-2">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        HD Stream
+      </span>
+    </div>
+  </header>
 
-    <!-- ================= TAMPILAN PILIHAN FOLDER VIDEO (SETELAH DIKLIK) ================= -->
-    <div id="main-content">
-        <h1>VIDEO HIJABKU</h1>
+  <!-- Main Content Container -->
+  <main class="max-w-4xl mx-auto p-4 sm:p-6 pb-20">
 
-        <div class="container">
-            <!-- VIDEO 1 (Hijab Season 1) -->
-            <a class="card" 
-               href="https://thewilddetail.com/jcmqzgpi?key=24b55e3636d607271fdc76c2cd116ebe" 
-               target="_blank" 
-               onclick="openFolder(event, 'https://trbnvideo.live/f/1teiHsVA')">
-                <div class="card-img-wrapper">
-                    <img class="card-img" src="https://i.ibb.co.com/LzZYGByp/Hijab-Season-1-Tiga-Kisah-Wanita.png" alt="Hijab Season 1">
-                    <div class="play-button">
-                        <div class="play-icon"></div>
-                    </div>
-                </div>
-                <div class="card-title">Hijab Season 1</div>
-            </a>
-
-            <!-- VIDEO 2 (Hijab Season 2 / Video 2) -->
-            <a class="card" 
-               href="https://thewilddetail.com/jcmqzgpi?key=24b55e3636d607271fdc76c2cd116ebe" 
-               target="_blank" 
-               onclick="openFolder(event, 'https://trbnvideo.live/f/q6ydNuKs')">
-                <div class="card-img-wrapper">
-                    <img class="card-img" src="https://i.ibb.co.com/qfw0HQS/image-1a6565b4.jpg" alt="Hijab Season 2">
-                    <div class="play-button">
-                        <div class="play-icon"></div>
-                    </div>
-                </div>
-                <div class="card-title">Hijab Season 2</div>
-            </a>
+    <!-- VIEW 1: DASHBOARD KATALOG (GRID 2x3 & PAGINASI) -->
+    <section id="catalogView" class="space-y-5">
+      
+      <!-- Card Header Banner Galeri Video -->
+      <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 sm:p-5 shadow-xl space-y-3">
+        <div class="flex items-center gap-2.5">
+          <span class="text-xl">🎬</span>
+          <h2 class="text-xl font-bold text-white tracking-wide">Galeri Video</h2>
         </div>
-    </div>
+        <p class="text-xs sm:text-sm text-slate-400">Pilih video untuk diputar langsung.</p>
+        <div>
+          <span class="inline-block bg-slate-950/80 text-indigo-400 border border-slate-800 text-xs font-medium px-3 py-1 rounded-lg">
+            Total: 26 Video
+          </span>
+        </div>
+      </div>
 
-    <!-- SCRIPT NAVIGASI & POPUNDER -->
-    <script>
-        function showVideoSelection(event) {
-            event.preventDefault(); // Mencegah link default
+      <!-- Header Status Paginasi -->
+      <div class="flex items-center justify-between pt-2">
+        <h3 class="text-sm font-bold text-slate-300 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+          Katalog Pilihan
+        </h3>
+        <span id="pageIndicator" class="text-xs text-slate-400 bg-slate-900 px-3 py-1 rounded-full border border-slate-800"></span>
+      </div>
+
+      <!-- Grid 2x3 Katalog Video -->
+      <div id="videoGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+        <!-- Render Card Video via JavaScript -->
+      </div>
+
+      <!-- Controls Paginasi Angka -->
+      <div id="paginationContainer" class="flex justify-center items-center gap-2 pt-6">
+        <!-- Render Button Paginasi via JavaScript -->
+      </div>
+    </section>
+
+    <!-- VIEW 2: PEMUTAR VIDEO (PLAYER EXASTREAM + IKLAN OVERLAY) -->
+    <section id="playerView" class="hidden space-y-4">
+      
+      <!-- Navigation Bar Atas Player -->
+      <div class="flex items-center justify-between">
+        <button onclick="goHome()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition text-sm font-medium shadow-md">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          Kembali ke Galeri
+        </button>
+      </div>
+
+      <!-- Container Pemutar Video 16:9 dengan Layer Overlay Iklan Tumpang Tindih -->
+      <div class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-slate-800">
+        
+        <!-- Frame Embed Exastream -->
+        <iframe id="videoPlayer" class="w-full h-full border-0" allowfullscreen allow="autoplay"></iframe>
+
+        <!-- BACKDROP TRANSPARAN (Pemicu Smartlink Seluruh Layar Video) -->
+        <div id="adBackdrop" class="absolute inset-0 z-10 bg-transparent cursor-pointer hidden" onclick="triggerSmartlinkBackdrop()"></div>
+
+        <!-- IKLAN 1: Chat Box Overlay (Posisi Tengah Layar, z-20) -->
+        <div id="chatAd" class="absolute inset-x-4 top-1/2 -translate-y-1/2 z-20 hidden justify-center pointer-events-auto">
+          <a href="https://auctionr.org/4/24b55e3636d607271fdc76c2cd116ebe" target="_blank" onclick="handleAdClick('chatAd', 'chat')" class="w-full max-w-xs bg-slate-900/95 border border-slate-700/90 p-3 pb-7 rounded-2xl shadow-2xl backdrop-blur flex items-start gap-2.5 relative text-left no-underline hover:border-slate-500 transition">
+            <div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center text-base flex-shrink-0 shadow-md">💬</div>
+            <div class="chat-text flex-1 pr-2">
+              <!-- Content diisi via JS (Siklus 1 & Siklus 2) -->
+            </div>
+            <!-- Tombol Tutup Pojok Kanan Bawah Kotak Chat -->
+            <span onclick="closeAd(event, 'chatAd', 'chat')" class="absolute bottom-1.5 right-2.5 bg-red-500/90 hover:bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded cursor-pointer transition z-30">tutup</span>
+          </a>
+        </div>
+
+        <!-- IKLAN 2: Banner Video Videy (Posisi Bawah Menutupi 1/3 Bagian Bawah Iklan 1, z-30) -->
+        <div id="bannerAd" class="absolute inset-x-4 bottom-2 z-30 hidden pointer-events-auto">
+          <a href="https://auctionr.org/4/24b55e3636d607271fdc76c2cd116ebe" target="_blank" onclick="handleAdClick('bannerAd', 'banner')" class="block relative w-full h-28 sm:h-32 bg-black/90 border border-slate-700/90 rounded-xl overflow-hidden shadow-2xl">
+            <!-- Frame Video Videy (Autoplay & Muted) -->
+            <iframe id="bannerVideo" class="w-full h-full object-cover border-0 pointer-events-none" allow="autoplay"></iframe>
+            <!-- Tombol (X) Pojok Kanan Atas Banner -->
+            <span onclick="closeAd(event, 'bannerAd', 'banner')" class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-red-500/90 hover:bg-red-600 text-white text-xs font-bold flex items-center justify-center cursor-pointer shadow-md transition z-40">×</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Info Judul Video (Warna Menyala Terang Tanpa Tag Kategori) -->
+      <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl shadow-lg">
+        <h1 id="videoTitle" class="text-base sm:text-lg font-bold text-blue-400 tracking-wide"></h1>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- JavaScript Logika Web & Monetisasi Smartlink -->
+  <script>
+    const SMARTLINK_URL = "https://auctionr.org/4/24b55e3636d607271fdc76c2cd116ebe";
+    const ITEMS_PER_PAGE = 6;
+    let currentPage = 1;
+    let currentVideo = null;
+
+    let chatShowCount = 0;
+    let bannerShowCount = 0;
+    const maxShows = 2;
+    let adTimer = null;
+
+    // Database 26 Video Utama (Tanpa Penomoran Judul)
+    const videoDatabase = [
+      { id: 'v1', title: 'Gadis sma cantik', embedUrl: 'https://trbnvideo.live/e/CQcGvyVa', thumbUrl: 'https://i.ibb.co/S7sFtzXm/Screenshot-2026-1031-080400.png', views: '26.9K', duration: '8:47' },
+      { id: 'v2', title: 'Abg kesakitan smpe nangis', embedUrl: 'https://trbnvideo.live/e/SVXyR42j', thumbUrl: 'https://i.ibb.co/Gvfr6vtV/Screenshot-2026-1031-083941.png', views: '38.3K', duration: '4:28' },
+      { id: 'v3', title: 'Ahyon jilbab', embedUrl: 'https://trbnvideo.live/e/DtjKh9CG', thumbUrl: 'https://i.ibb.co.com/Tqvwkkd8/Screenshot-2026-1029-002208.png', views: '71.1K', duration: '4:27' },
+      { id: 'v4', title: 'nginep di kost pacar', embedUrl: 'https://trbnvideo.live/e/S4A8HsxX', thumbUrl: 'https://i.ibb.co.com/cKhW90v3/Screenshot-2026-1029-003252.png', views: '16.0K', duration: '7:28' },
+      { id: 'v5', title: 'Masih imut sekali', embedUrl: 'https://trbnvideo.live/e/SbPnn8mJ', thumbUrl: 'https://i.ibb.co.com/kV6RdTYQ/Screenshot-2026-1102-071629.png', views: '45.2K', duration: '5:12' },
+      { id: 'v6', title: 'Jilbab terbaik', embedUrl: 'https://trbnvideo.live/e/fPrR7yn3', thumbUrl: 'https://i.ibb.co/849wFLN4/Screenshot-2026-1102-111417.png', views: '89.4K', duration: '6:05' },
+      { id: 'v7', title: 'Perawat jilbab eksib di RS', embedUrl: 'https://trbnvideo.live/e/1uUygdYs', thumbUrl: 'https://i.ibb.co/mC5k4CJD/Screenshot-2026-1102-111649.png', views: '52.7K', duration: '9:15' },
+      { id: 'v8', title: 'tiktokers Notstarlaa', embedUrl: 'https://trbnvideo.live/e/U4TKi6yL', thumbUrl: 'https://i.ibb.co/ZzN1DYtf/Screenshot-2026-1101-063956.png', views: '63.1K', duration: '3:40' },
+      { id: 'v9', title: 'Abg toubrutt Notstarlaa', embedUrl: 'https://trbnvideo.live/e/DTB4wg6H', thumbUrl: 'https://i.ibb.co/8nqbvkwf/Screenshot-2026-1101-064037.png', views: '41.8K', duration: '5:50' },
+      { id: 'v10', title: 'Tiktokers Ica Cull', embedUrl: 'https://trbnvideo.live/e/CEiJ9GZY', thumbUrl: 'https://i.ibb.co/b5dBCm5C/Screenshot-2026-1101-064821.png', views: '33.9K', duration: '4:15' },
+      { id: 'v11', title: 'Salma Alea 1', embedUrl: 'https://trbnvideo.live/e/r3wMQMLS', thumbUrl: 'https://i.ibb.co/rRFCbcP9/Screenshot-2026-1101-064922.png', views: '98.0K', duration: '8:20' },
+      { id: 'v12', title: 'Salma Alea 2', embedUrl: 'https://trbnvideo.live/e/UCtEzsf4', thumbUrl: 'https://i.ibb.co/zTFgztVv/Screenshot-2026-1101-065114.png', views: '77.3K', duration: '6:45' },
+      { id: 'v13', title: 'Pakai terong Jumbo', embedUrl: 'https://trbnvideo.live/e/JOXi1E7J', thumbUrl: 'https://i.ibb.co/nM44DXGW/Screenshot-2026-1101-065149.png', views: '55.6K', duration: '7:10' },
+      { id: 'v14', title: 'Arachuu', embedUrl: 'https://trbnvideo.live/e/f8QBWMHt', thumbUrl: 'https://i.ibb.co/5xwn2gKB/Screenshot-2026-1101-072116.png', views: '104.2K', duration: '5:30' },
+      { id: 'v15', title: 'Bawa spg nginap di hotel', embedUrl: 'https://trbnvideo.live/e/Q8OTb3l0', thumbUrl: 'https://i.ibb.co/qYbbmQ6R/Screenshot-2026-1031-075743.png', views: '61.4K', duration: '10:12' },
+      { id: 'v16', title: 'Boking cewek cantik', embedUrl: 'https://trbnvideo.live/e/q1LeKbHe', thumbUrl: 'https://i.ibb.co/VWHyPXbj/Screenshot-2026-1031-075955.png', views: '82.9K', duration: '8:55' },
+      { id: 'v17', title: 'Goyangannya bikin gak tahan', embedUrl: 'https://trbnvideo.live/e/W5K2ggG1', thumbUrl: 'https://i.ibb.co.com/GmnYvhX/Screenshot-2026-1029-003737.png', views: '49.8K', duration: '4:50' },
+      { id: 'v18', title: 'Sepupu toubrutt', embedUrl: 'https://trbnvideo.live/e/k8NrIjie', thumbUrl: 'https://i.ibb.co.com/LzN5Pw3L/Screenshot-2026-1028-235223.png', views: '37.1K', duration: '6:20' },
+      { id: 'v19', title: 'Minta dibeliin iphone', embedUrl: 'https://trbnvideo.live/e/E6yudbMs', thumbUrl: 'https://i.ibb.co.com/S433n7H2/Screenshot-2026-1029-001612.png', views: '28.5K', duration: '5:05' },
+      { id: 'v20', title: 'jilbab toubrutt', embedUrl: 'https://trbnvideo.live/e/08SNgxe9', thumbUrl: 'https://i.ibb.co.com/3VGdCJ8/Screenshot-2026-1029-001858.png', views: '91.0K', duration: '7:40' },
+      { id: 'v21', title: 'Gina jilboob', embedUrl: 'https://trbnvideo.live/e/F51NRzNP', thumbUrl: 'https://i.ibb.co/NnKs0Hnd/images-4.jpg', views: '68.4K', duration: '6:15' },
+      { id: 'v22', title: 'Gina Hijaber toge binal', embedUrl: 'https://trbnvideo.live/e/H6jg5ztO', thumbUrl: 'https://i.ibb.co/gZ3QjTdD/images-1.jpg', views: '84.2K', duration: '9:00' },
+      { id: 'v23', title: 'Malu tapi menikmati', embedUrl: 'https://trbnvideo.live/e/GSBw9P3Q', thumbUrl: 'https://i.ibb.co/mVGSn03K/Screenshot-2026-1031-072703.png', views: '53.9K', duration: '5:48' },
+      { id: 'v24', title: 'Jilbab mendesah dapet batang gede', embedUrl: 'https://trbnvideo.live/e/NTgAYglk', thumbUrl: 'https://i.ibb.co/Kp6q01J2/Screenshot-2026-1031-072954.png', views: '112.5K', duration: '11:02' },
+      { id: 'v25', title: 'Jilbab coklat binal', embedUrl: 'https://trbnvideo.live/e/a03aWEYS', thumbUrl: 'https://i.ibb.co/tMPDkKmj/Screenshot-2026-1031-073143.png', views: '47.3K', duration: '6:30' },
+      { id: 'v26', title: 'Cantik & mulus', embedUrl: 'https://trbnvideo.live/e/XXvnStXb', thumbUrl: 'https://i.ibb.co/LdLFpdL8/Screenshot-2026-1031-084559.png', views: '79.1K', duration: '8:14' }
+    ];
+
+    function renderCatalog() {
+      const grid = document.getElementById('videoGrid');
+      grid.innerHTML = '';
+
+      const totalPages = Math.ceil(videoDatabase.length / ITEMS_PER_PAGE);
+      const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+      const paginatedVideos = videoDatabase.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+      paginatedVideos.forEach(v => {
+        const card = document.createElement('div');
+        card.className = "group relative bg-slate-900/90 border border-slate-800 rounded-2xl overflow-hidden cursor-pointer hover:border-indigo-500/50 transition flex flex-col shadow-xl";
+        card.onclick = () => selectVideo(v.id);
+
+        card.innerHTML = `
+          <div class="relative w-full aspect-video bg-slate-950 overflow-hidden">
+            <img src="${v.thumbUrl}" alt="${v.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
             
-            // Sembunyikan layar penuh pertama, lalu tampilkan pilihan folder video
-            document.getElementById('splash-screen').style.display = 'none';
-            document.getElementById('main-content').style.display = 'flex';
+            <div class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition">
+              <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-600/40 group-hover:scale-110 transition">
+                <svg class="w-5 h-5 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+
+            <span class="absolute bottom-2 right-2 bg-black/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow">
+              ${v.duration}
+            </span>
+          </div>
+
+          <div class="p-3 flex-1 flex flex-col justify-between space-y-2">
+            <div>
+              <!-- Tag Kategori Telah Dihilangkan & Judul Diubah Menjadi Biru Menyala -->
+              <h3 class="text-xs font-semibold text-blue-400 group-hover:text-blue-300 transition line-clamp-2 leading-snug">
+                ${v.title}
+              </h3>
+            </div>
+
+            <div class="flex items-center justify-between text-[11px] pt-1">
+              <span class="text-slate-400 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+                ${v.views}
+              </span>
+              <span class="text-blue-400 font-semibold group-hover:underline flex items-center">
+                Tonton &gt;
+              </span>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      document.getElementById('pageIndicator').textContent = `Hal ${currentPage} dari ${totalPages}`;
+      renderPagination(totalPages);
+    }
+
+    function renderPagination(totalPages) {
+      const container = document.getElementById('paginationContainer');
+      container.innerHTML = '';
+
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        btn.className = `w-8 h-8 rounded-lg font-bold text-xs transition border ${
+          i === currentPage
+            ? 'bg-blue-600 border-blue-500 text-white shadow-md'
+            : 'bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-white'
+        }`;
+        btn.onclick = () => {
+          currentPage = i;
+          renderCatalog();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        container.appendChild(btn);
+      }
+    }
+
+    // Pemicu Klik Play dari Katalog (Smartlink di Tab Baru + Redirect Player)
+    function selectVideo(videoId) {
+      window.open(SMARTLINK_URL, '_blank');
+
+      const video = videoDatabase.find(v => v.id === videoId);
+      if (!video) return;
+
+      currentVideo = video;
+      document.getElementById('videoTitle').textContent = video.title;
+      document.getElementById('videoPlayer').src = video.embedUrl;
+
+      document.getElementById('catalogView').classList.add('hidden');
+      document.getElementById('playerView').classList.remove('hidden');
+
+      resetAndStartAdSystem();
+    }
+
+    function goHome() {
+      document.getElementById('playerView').classList.add('hidden');
+      document.getElementById('catalogView').classList.remove('hidden');
+      document.getElementById('videoPlayer').src = '';
+      clearTimeout(adTimer);
+      hideAllAds();
+    }
+
+    function resetAndStartAdSystem() {
+      chatShowCount = 0;
+      bannerShowCount = 0;
+      hideAllAds();
+      scheduleNextAdCycle();
+    }
+
+    function hideAllAds() {
+      document.getElementById('chatAd').style.display = 'none';
+      document.getElementById('bannerAd').style.display = 'none';
+      document.getElementById('adBackdrop').classList.add('hidden');
+    }
+
+    function scheduleNextAdCycle() {
+      if (chatShowCount < maxShows || bannerShowCount < maxShows) {
+        clearTimeout(adTimer);
+        adTimer = setTimeout(() => {
+          showAdCycle();
+        }, 5000);
+      }
+    }
+
+    function showAdCycle() {
+      document.getElementById('adBackdrop').classList.remove('hidden');
+
+      if (chatShowCount < maxShows) {
+        const chatTextElement = document.querySelector('#chatAd .chat-text');
+        
+        if (chatShowCount === 0) {
+          chatTextElement.innerHTML = `
+            <strong class="text-indigo-400 font-bold block text-[11px] mb-0.5">Pesan Baru</strong>
+            <p class="text-slate-200 text-[11px] leading-snug break-words">Seseorang mengirimkan foto/video khusus untukmu! Klik untuk melihat sekarang.</p>
+          `;
+        } else {
+          chatTextElement.innerHTML = `
+            <strong class="text-indigo-400 font-bold block text-[11px] mb-0.5">Pesan Baru (1)</strong>
+            <p class="text-slate-200 text-[11px] leading-snug break-words">Pesan belum dibaca: Link akses video penuh hampir kadaluarsa! Klik di sini untuk membuka.</p>
+          `;
         }
 
-        function openFolder(event, destinationUrl) {
-            setTimeout(function() {
-                window.location.href = destinationUrl;
-            }, 300);
-        }
-    </script>
+        document.getElementById('chatAd').style.display = 'flex';
+      }
 
+      setTimeout(() => {
+        if (bannerShowCount < maxShows) {
+          const bannerVideoElement = document.getElementById('bannerVideo');
+          
+          if (bannerShowCount === 0) {
+            bannerVideoElement.src = 'https://videy.co/v/?id=ZQdLatS51&autoplay=1&muted=1';
+          } else {
+            bannerVideoElement.src = 'https://videy.co/v/?id=ENOlSaoU1&autoplay=1&muted=1';
+          }
+
+          document.getElementById('bannerAd').style.display = 'block';
+        }
+      }, 500);
+    }
+
+    function handleAdClick(adId, adType) {
+      if (adType === 'chat') chatShowCount++;
+      if (adType === 'banner') bannerShowCount++;
+      
+      document.getElementById(adId).style.display = 'none';
+      checkAllAdsClosed();
+    }
+
+    function closeAd(event, adId, adType) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (adType === 'chat') chatShowCount++;
+      if (adType === 'banner') bannerShowCount++;
+
+      document.getElementById(adId).style.display = 'none';
+      checkAllAdsClosed();
+    }
+
+    function triggerSmartlinkBackdrop() {
+      window.open(SMARTLINK_URL, '_blank');
+      hideAllAds();
+      chatShowCount++;
+      bannerShowCount++;
+      checkAllAdsClosed();
+    }
+
+    function checkAllAdsClosed() {
+      const isChatHidden = document.getElementById('chatAd').style.display === 'none';
+      const isBannerHidden = document.getElementById('bannerAd').style.display === 'none';
+
+      if (isChatHidden && isBannerHidden) {
+        document.getElementById('adBackdrop').classList.add('hidden');
+
+        if (chatShowCount < maxShows || bannerShowCount < maxShows) {
+          scheduleNextAdCycle();
+        }
+      }
+    }
+
+    renderCatalog();
+  </script>
 </body>
 </html>
